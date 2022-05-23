@@ -1,11 +1,25 @@
-version: "2.1"
+version: "3"
 services: 
   vrising:
     container_name: vrising-server
-    image: vrising:latest
+    image: solareon/vrising-svr:latest
     volumes: 
       - /home/googlrr/VRisingServer:/root/.wine/drive_c/users/root/AppData/LocalLow/Stunlock Studios/VRisingServer/Saves
       - /home/googlrr/VRisingSettings:/root/.wine/drive_c/users/root/AppData/LocalLow/Stunlock Studios/VRisingServer/Settings/
+    environment:
+      - SERVER_NAME=value
+      - SERVER_DESCRIPTION=value
+      - GAME_PORT=27015
+      - QUERY_PORT=27016
+      - MAX_USERS=40
+      - MAX_ADMIN=4
+      - SAVE_NAME=world1
+      - SERVER_PASS=password
+      - STEAM_LIST=true
+      - AUTOSAVE_NUM=50
+      - AUTOSAVE_INT=300
+      - ADMIN_DBG=true
+      - DISABLE_DBGEVT=false
     ports: 
       - "27015:27015/udp"
       - "27016:27016/udp"
