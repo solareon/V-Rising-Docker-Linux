@@ -46,11 +46,11 @@ echo " "
 
 if [ ! -f "$p/ServerGameSettings.json" ]; then
         echo "$p/ServerGameSettings.json not found. Copying default file."
-        cp "$s/VRisingServer_Data/StreamingAssets/Settings/ServerGameSettings.json" "$p/" 2>&1
+        cp "$s/VRisingServer_Data/StreamingAssets/Settings/ServerGameSettings.json" "$p/Settings/" 2>&1
 fi
 if [ ! -f "$p/ServerHostSettings.json" ]; then
         echo "$p/ServerHostSettings.json not found. Copying default file."
-        cp "$s/VRisingServer_Data/StreamingAssets/Settings/ServerHostSettings.json" "$p/" 2>&1
+        cp "$s/VRisingServer_Data/StreamingAssets/Settings/ServerHostSettings.json" "$p/Settings/" 2>&1
 fi
 #Builds server settings from environment variables
 echo Building server config
@@ -69,7 +69,10 @@ if [[ -z "${GAME_PRESET}" ]]; then export GAME_PRESET="StandardPvP"; fi
 
 jq \
   '.Name = env.SERVER_NAME | .Description = env.SERVER_DESCRIPTION | .Port = env.GAME_PORT | .QueryPort = env.QUERY_PORT | .MaxConnectedUsers = env.MAX_USERS | .MaxConnectedAdmins = env.MAX_ADMIN |  .SaveName = env.SAVE_NAME | .Password = env.SERVER_PASS | .ListOnMasterServer = env.STEAM_LIST | .AutoSaveCount = env.AUTOSAVE_NUM | .AutoSaveInterval = env.AUTOSAVE_INT | .GameSettingsPreset = env.GAME_PRESET' \
-  < $s/VRisingServer_Data/StreamingAssets/Settings/ServerHostSettings.json > $p/ServerHostSettings.json
+  < $s/VRisingServer_Data/StreamingAssets/Settings/ServerHostSettings.json > $p/Settings/ServerHostSettings.json
+
+#Restart cleanup
+if [ -f "/tmp/.X0-lock" ]; then rm /tmp/.X0-lock; fi
 
 cd "$s"
 set SteamAppId=`cat $s/steam_appid.txt`

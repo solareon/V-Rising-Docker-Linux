@@ -72,7 +72,7 @@ As the names suggest, one of them is for hosting related settings and the other 
 The default settings of these can be found in `/server/VRisingServer_Data/StreamingAssets/Settings/`. These are only for reference and not used during the running over the server
 
 After the server has loaded the default files it looks for local overrides. These are located in:
-`/persistentdata/`
+`/persistentdata/Settings`
 
 Note: ServerHostSettings.json is overwritten on startup using information from server variables. If you do not define the environment variables they will be filled with the defaults from the table below.
 
