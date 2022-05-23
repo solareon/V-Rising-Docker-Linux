@@ -4,8 +4,8 @@ services:
     container_name: vrising-server
     image: solareon/vrising-svr:latest
     volumes: 
-      - /home/googlrr/VRisingServer:/root/.wine/drive_c/users/root/AppData/LocalLow/Stunlock Studios/VRisingServer/Saves
-      - /home/googlrr/VRisingSettings:/root/.wine/drive_c/users/root/AppData/LocalLow/Stunlock Studios/VRisingServer/Settings/
+      - ~/vrising/saves:/saves
+      - ~/vrising/settings:/settings
     environment:
       - SERVER_NAME=value
       - SERVER_DESCRIPTION=value

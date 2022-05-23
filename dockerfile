@@ -22,13 +22,13 @@ RUN DEBIAN_FRONTEND=noninteractive \
 #     && mkdir -p /root/.wine/drive_c/VRisingServer/ \
 #     && cd /root/.wine/drive_c/steamcmd 
 
-RUN mkdir -p /root/.wine/drive_c/users/root/AppData/LocalLow/'Stunlock Studios'/VRisingServer/ /root/.wine/drive_c/VRisingServer/ /template /config
+RUN mkdir -p /root/.wine/drive_c/users/root/AppData/LocalLow/'Stunlock Studios'/VRisingServer/ /root/.wine/drive_c/VRisingServer/ /template /config /saves
 
 COPY root .
 
 COPY settings /template
 
-WORKDIR /scripts
+WORKDIR /root/scripts
 
 RUN chmod +x ./run.sh
 
