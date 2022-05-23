@@ -10,7 +10,8 @@ There are two methods to run the server. Docker Compose is the recommended versi
 
 ### docker compose
 
-```version: "3"
+```
+version: "3"
 services: 
   vrising:
     container_name: vrising-server
@@ -36,7 +37,7 @@ services:
       - "27015:27015/udp"
       - "27016:27016/udp"
     restart: unless-stopped
-    ```
+```
 
 ### docker cli
     ```docker run -d --name='vrising-server' \
