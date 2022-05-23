@@ -20,19 +20,19 @@ services:
       - ~/vrising/server:/mnt/vrising/server
       - ~/vrising/persistentdata:/mnt/vrising/persistentdata
     environment:
-      - TZ="Europe/Berlin"
-      - SERVER_NAME="A V-Rising Server"
-      - SERVER_DESCRIPTION="A server for my friends"
+      - "TZ=Europe/Berlin"
+      - "SERVER_NAME=A V-Rising Server"
+      - "SERVER_DESCRIPTION=A server for my friends"
       - GAME_PORT=27015
       - QUERY_PORT=27016
       - MAX_USERS=40
       - MAX_ADMIN=4
-      - SAVE_NAME="world1"
-      - SERVER_PASS="password"
+      - "SAVE_NAME=world1"
+      - "SERVER_PASS=password"
       - STEAM_LIST=true
       - AUTOSAVE_NUM=50
       - AUTOSAVE_INT=300
-      - GAME_PRESET="StandardPvP"
+      - "GAME_PRESET=StandardPvP"
     ports: 
       - "27015:27015/udp"
       - "27016:27016/udp"
@@ -43,14 +43,14 @@ services:
 ```
     docker run -d --name='vrising-server' \
     -e TZ="Europe/Berlin" \
-    -e SERVER_NAME="A V-Rising Server" \ 
-    -e SERVER_DESCRIPTION="A server for my friends" \
+    -e "SERVER_NAME=A V-Rising Server" \ 
+    -e "SERVER_DESCRIPTION=A server for my friends" \
     -e GAME_PORT=27015 \
     -e QUERY_PORT=27016 \
     -e MAX_USERS=40 \
     -e MAX_ADMIN=4 \
-    -e SAVE_NAME="world1" \
-    -e SERVER_PASS="password" \
+    -e "SAVE_NAME=world1" \
+    -e "SERVER_PASS=password" \
     -e STEAM_LIST=true \
     -e AUTOSAVE_NUM=50 \
     -e AUTOSAVE_INT=300 \
