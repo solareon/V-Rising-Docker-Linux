@@ -40,7 +40,8 @@ services:
 ```
 
 ### docker cli
-    ```docker run -d --name='vrising-server' \
+```
+    docker run -d --name='vrising-server' \
     -e TZ="Europe/Berlin" \
     -e SERVER_NAME="A V-Rising Server" \ 
     -e SERVER_DESCRIPTION="A server for my friends" \
@@ -59,7 +60,7 @@ services:
     -p 27015:27015/udp \
     -p 27016:27016/udp \
     'solareon/vrising-svr:latest'
-    ```
+```
 
 # Configuring the Server
 There are two main settings files that the server is using.
