@@ -1,12 +1,63 @@
 # Docker container for linux vrising server 
 
+
+
 # V Rising Dedicated Server Instructions
-The V Rising Dedicated Server is as it sounds a dedicated server application for the game [V Rising](https://store.steampowered.com/app/1604030/V_Rising/).
+The V Rising Dedicated Server is as it sounds a dedicated server application running under WINE inside Docker for the game [V Rising](https://store.steampowered.com/app/1604030/V_Rising/).
 
 # Running the Server
-In its simplest form you could just execute VRisingServer.exe to start the server. This will start the server with all default settings, which is probably not what you want.
+There are two methods to run the server. Docker Compose is the recommended version as it will all you to easily modify environment variables and restart/shutdown your server without remembering a complicated command line
 
-There is an example batch script (`start_server_example.bat`) in the installation folder next to the executable file. It is recommended that you make a copy of this file and modify it to your liking. If you change the supplied example file it might be overwritten when the software is updated.
+### docker compose
+
+```version: "3"
+services: 
+  vrising:
+    container_name: vrising-server
+    image: solareon/vrising-svr:latest
+    volumes: 
+      - ~/vrising/server:/mnt/vrising/server
+      - ~/vrising/persistentdata:/mnt/vrising/persistentdata
+    environment:
+      - TZ="Europe/Berlin"
+      - SERVER_NAME="A V-Rising Server"
+      - SERVER_DESCRIPTION="A server for my friends"
+      - GAME_PORT=27015
+      - QUERY_PORT=27016
+      - MAX_USERS=40
+      - MAX_ADMIN=4
+      - SAVE_NAME="world1"
+      - SERVER_PASS="password"
+      - STEAM_LIST=true
+      - AUTOSAVE_NUM=50
+      - AUTOSAVE_INT=300
+      - GAME_PRESET="StandardPvP"
+    ports: 
+      - "27015:27015/udp"
+      - "27016:27016/udp"
+    restart: unless-stopped```
+
+### docker cli
+    ```docker run -d --name='vrising-server' \
+    -e TZ="Europe/Berlin" \
+    -e SERVER_NAME="A V-Rising Server" \ 
+    -e SERVER_DESCRIPTION="A server for my friends" \
+    -e GAME_PORT=27015 \
+    -e QUERY_PORT=27016 \
+    -e MAX_USERS=40 \
+    -e MAX_ADMIN=4 \
+    -e SAVE_NAME="world1" \
+    -e SERVER_PASS="password" \
+    -e STEAM_LIST=true \
+    -e AUTOSAVE_NUM=50 \
+    -e AUTOSAVE_INT=300 \
+    -e GAME_PRESET="StandardPvP" \
+    -v '/home/user/vrising-server/server':'/mnt/vrising/server':'rw' \
+    -v '/home/user/vrising-server/persistentdata':'/mnt/vrising/persistentdata':'rw' \
+    -p 27015:27015/udp \
+    -p 27016:27016/udp \
+    'solareon/vrising-svr:latest'
+    ```
 
 # Configuring the Server
 There are two main settings files that the server is using.
@@ -15,75 +66,45 @@ There are two main settings files that the server is using.
 
 As the names suggest, one of them is for hosting related settings and the other one is for game play related settings.
 
-The default settings of these can be found in `VRisingServer_Data/StreamingAssets/Settings/`. While you could modify these files, just like with the example start script, it is for the same reason not recommended to do this.
+The default settings of these can be found in `/server/VRisingServer_Data/StreamingAssets/Settings/`. These are only for reference and not used during the running over the server
 
-After the server has loaded the default files it looks for local overrides. The default location it looks for these files are:
-* Windows: `%USERPROFILE%\AppData\LocalLow\Stunlock Studios\VRisingServer\Settings`
+After the server has loaded the default files it looks for local overrides. These are located in:
+`/persistentdata/`
 
-You can put a full settings file in this local override location, or you can populate it with just the settings/values that differ from the default file.
+Note: ServerHostSettings.json is overwritten on startup using information from server variables. If you do not define the environment variables they will be filled with the defaults from the table below.
 
-This location can be customized with the `-persistentDataPath` parameter, which is recommended to do in general and a must if you want to run multiple servers on one host to keep the settings and saves separated.
-
-**NOTE**: The path that is replaced with `-persistentDataPath` is what the [`Application.persistentDataPath`](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) constant in [Unity](https://unity.com/) is referring to, which is:
-* Windows: `%USERPROFILE%\AppData\LocalLow\Stunlock Studios\VRisingServer\`
-
-That means that anything that would have gone inside the path above, like `Settings` and `Saves` goes below/inside whatever folder specified with `-persistentDataPath`. So settings files are read from the `Settings` subfolder and saves are put in the `Saves` subfolder within the specified path.
-
-The most important settings in the `ServerHostSettings.json` file are the following:
+# Environment Variables
+The most important settings exposed as environment variables are the following:
 
 | Setting | Value Type | Example Value | Comment |
 |----------|:-------------:|:------:|---|
-| Name | string | "My V Rising Server" | Name of server |
-| Description | string | "This is a role playing server" | Short description of server purpose, rules, message of the day |
-| Port | number | 27015 | UDP port for game traffic |
-| QueryPort | number | 27016 | UDP port for Steam server list features |
-| MaxConnectedUsers | number | 10 | Max number of concurrent players on server |
-| MaxConnectedAdmins | number | 4 | Max number of admins to allow connect even when server is full |
-| SaveName | string | "world1" | Name of save file/directory |
-| Password | string | "SuperSecret" | Set a password or leave empty |
-| ListOnMasterServer | boolean | true | Set to true to list on server list, else set to false |
-| AutoSaveCount | number | 40 | Number of autosaves to keep |
-| AutoSaveInterval | number | 120 | Interval in seconds between each auto save |
-| GameSettingsPreset | string | "StandardPvP" | Name of a GameSettings preset found in the GameSettingPresets folder |
+| SERVER_NAME | string | "My V Rising Server" | Name of server |
+| SERVER_DESCRIPTION | string | "This is a role playing server" | Short description of server purpose, rules, message of the day |
+| GAME_PORT | number | 27015 | UDP port for game traffic |
+| QUERY_PORT | number | 27016 | UDP port for Steam server list features |
+| MAX_USERS | number | 40 | Max number of concurrent players on server |
+| MAX_ADMIN | number | 4 | Max number of admins to allow connect even when server is full |
+| SAVE_NAME | string | "world1" | Name of save file/directory |
+| SERVER_PASS | string | "password" | Set a password or leave empty |
+| STEAM_LIST | boolean | true | Set to true to list on server list, else set to false |
+| AUTOSAVE_NUM | number | 50 | Number of autosaves to keep |
+| AUTOSAVE_INT | number | 300 | Interval in seconds between each auto save |
+| GAME_PRESET | string | "StandardPvP" | Name of a GameSettings preset found in the GameSettingPresets folder |
 
-If you want others to connect to your server, make sure you allow the program through the firewall. You might also need to forward ports on your router. To do this, please follow your manufacturer's instructions for your particular router.
+If you want others to connect to your server, make sure you allow the server through your firewall. You might also need to forward ports on your router. To do this, please follow your manufacturer's instructions for your particular router.
+
 If you want your server to show up on the server list you need to make sure that both the specified queryPort and gamePort is open in your firewall and forwarded on your router, otherwise just opening/forwarding the gamePort will be enough.
 
-To become an administrator in the game you will first need to modify the `adminlist.txt` file under `/settings/` with your steamId (one steamId per line). This can be done without restarting your server. To become an administrator in the game you need to enable the console in the options menu, bring it down with `~` and authenticate using the `adminauth` console command. Once an administrator you can use a number of administrative commands like `banuser`, `bancharacter`, `banned`, `unban` and `kick`.
+To become an administrator in the game you will first need to modify the `adminlist.txt` file under `/persistentdata/` with your steamId (one steamId per line). This can be done without restarting your server. To become an administrator in the game you need to enable the console in the options menu, bring it down with `~` and authenticate using the `adminauth` console command. Once an administrator you can use a number of administrative commands like `banuser`, `bancharacter`, `banned`, `unban` and `kick`.
 
-If you ban users through the in-game console the server will automatically modify the `banlist.txt` located under `/settings/` but you can also modify this manually (one steamId per line).
+If you ban users through the in-game console the server will automatically modify the `banlist.txt` located under `/persistentdata/` but you can also modify this manually (one steamId per line).
 
 # Save Files
 The default location for save files are:
-`/saves/
-
-However, just like with the settings, this can be overridden with the `-persistentDataPath` parameter. As explained above, the saves will put in the `Saves` subfolder of whatever path is specificed by `-persistentDataPath`.
+`/persistentdata/`
 
 ## Backups
 It is highly recommended to backup the save files often and before patching or before starting the server after having patched.
 
 The current auto save settings allows you to set save interval and save count. So with the same amount of disk space you either save often but maybe not have that many save files (not so far back in time), or save less often (longer rollback in-case of crash) and have more save files, or high number of on both and consume more disk space. So, again, regularly backing up you save files is highly recommended in case your game state becomes corrupted.
-using Wine in an ubuntu container
-
-This isn't really meant to be a guide, just publishing because at the moment not much info on setting this up out there. I'm no docker expert so there's probably a better way to go about this. Sorry if these steps aren't 100% accurate: 
-
-1. Clone the repo
-git clone https://github.com/Googlrr/V-Rising-Docker-Linux
-
-2. CD to the directory
-cd V-Rising-Docker-Linux
-
-3. Modify the ServerGameSettings.json and ServerHostSettings.json for whatever you want. 
-
-4. Move all the files in /settings/ to some location.
-
-4. Build the image
-sudo docker build . -t vrising:latest
-
-5. Modify docker compose, set a path for where you want your saves. Set the save and settings directories
-
-6. compose
-sudo docker-compose up -d 
-
-Really messy setup but this was the only way I could figure out how to work it lol. Never used Wine before. Hope for a native linux server soon! 
 
