@@ -1,6 +1,5 @@
 FROM steamcmd/steamcmd
 
-USER root
 VOLUME ["/mnt/vrising/server", "/mnt/vrising/persistentdata"]
 
 ARG TINI_VERSION=v0.19.0

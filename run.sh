@@ -4,7 +4,7 @@ p=/mnt/vrising/persistentdata
 d=/mnt/vrising/persistentdata/dotnet
 #setup directories
 mkdir -p "$d" 2>/dev/null
-chmod -R 777 "$d" 2>/dev/null
+#chmod -R 777 "$d" 2>/dev/null
 
 #clear tmp
 cd /tmp
