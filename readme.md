@@ -4,10 +4,10 @@ Based upon steamcmd with WINE added. Supports modifying server config via enviro
 [![Docker Pulls](https://badgen.net/docker/pulls/solareon/vrising-svr?icon=docker&label=pulls)](https://hub.docker.com/r/solareon/vrising-svr) 
 [![Docker Stars](https://badgen.net/docker/stars/solareon/vrising-svr?icon=docker&label=stars)](https://hub.docker.com/r/solareon/vrising-svr) 
 [![Docker Image Size](https://badgen.net/docker/size/solareon/vrising-svr?icon=docker&label=image%20size)](https://hub.docker.com/r/solareon/vrising-svr) 
-![Github stars](https://badgen.net/github/stars/solareon/V-Rising-Docker-Linux?icon=github&label=stars) 
-![Github forks](https://badgen.net/github/forks/solareon/V-Rising-Docker-Linux?icon=github&label=forks) 
-![Github issues](https://img.shields.io/github/issues/solareon/V-Rising-Docker-Linux)
-![Github last-commit](https://img.shields.io/github/last-commit/solareon/V-Rising-Docker-Linux)
+![Github stars](https://badgen.net/github/stars/solareon/vrising-docker?icon=github&label=stars) 
+![Github forks](https://badgen.net/github/forks/solareon/vrising-docker?icon=github&label=forks) 
+![Github issues](https://img.shields.io/github/issues/solareon/vrising-docker)
+![Github last-commit](https://img.shields.io/github/last-commit/solareon/vrising-docker)
 
 # V Rising Dedicated Server Instructions
 The V Rising Dedicated Server is as it sounds a dedicated server application running under WINE inside Docker for the game [V Rising](https://store.steampowered.com/app/1604030/V_Rising/).
