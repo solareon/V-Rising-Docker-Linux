@@ -17,7 +17,7 @@ RUN apt-get update -y && \
     apt-get upgrade -y 
 
 RUN apt-get update && \
-    apt-get install -y wine-stable wine32 wine64 xvfb xserver-xorg jq wget && \
+    apt-get install -y --no-install-recommends wine-stable wine32 wine64 xvfb xserver-xorg jq wget && \
     apt-get clean
 
 COPY run.sh /run.sh
