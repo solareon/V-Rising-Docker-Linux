@@ -99,7 +99,7 @@ The most important settings exposed as environment variables are the following:
 | STEAM_LIST | boolean | true | Set to true to list on server list, else set to false |
 | AUTOSAVE_NUM | number | 50 | Number of autosaves to keep |
 | AUTOSAVE_INT | number | 300 | Interval in seconds between each auto save |
-| GAME_PRESET | string | "StandardPvP" | Name of a GameSettings preset found in the GameSettingPresets folder. Using this may prevent any changes from `ServerGameSettings.json` from taking effect. |
+| GAME_PRESET | string | "StandardPvP" | Name of a GameSettings preset found in the GameSettingPresets folder. Using this will prevent any changes from `ServerGameSettings.json` from taking effect. |
 
 If you want others to connect to your server, make sure you allow the server through your firewall. You might also need to forward ports on your router. To do this, please follow your manufacturer's instructions for your particular router.
 

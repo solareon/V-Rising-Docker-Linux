@@ -65,7 +65,7 @@ if [[ -z "${SERVER_PASS}" ]]; then export SERVER_PASS="password"; fi
 if [[ -z "${STEAM_LIST}" ]]; then export STEAM_LIST=true; fi
 if [[ -z "${AUTOSAVE_NUM}" ]]; then export AUTOSAVE_NUM=50; fi
 if [[ -z "${AUTOSAVE_INT}" ]]; then export AUTOSAVE_INT=300; fi
-if [[ -z "${GAME_PRESET}" ]]; then export GAME_PRESET="StandardPvP"; fi
+if [[ -z "${GAME_PRESET}" ]]; then export GAME_PRESET=""; fi
 
 jq \
   '.Name = env.SERVER_NAME | .Description = env.SERVER_DESCRIPTION | .Port = env.GAME_PORT | .QueryPort = env.QUERY_PORT | .MaxConnectedUsers = env.MAX_USERS | .MaxConnectedAdmins = env.MAX_ADMIN |  .SaveName = env.SAVE_NAME | .Password = env.SERVER_PASS | .ListOnMasterServer = env.STEAM_LIST | .AutoSaveCount = env.AUTOSAVE_NUM | .AutoSaveInterval = env.AUTOSAVE_INT | .GameSettingsPreset = env.GAME_PRESET' \
