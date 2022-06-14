@@ -83,6 +83,8 @@ After the server has loaded the default files it looks for local overrides. Thes
 
 Note: ServerHostSettings.json is overwritten on startup using information from server variables. If you do not define the environment variables they will be filled with the defaults from the table below.
 
+Definitions for `ServerGameSettings.json` are available [here (PDF)](https://cdn.stunlock.com/blog/2022/05/25083113/Game-Server-Settings.pdf)
+
 # Environment Variables
 The most important settings exposed as environment variables are the following:
 
