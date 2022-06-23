@@ -34,15 +34,20 @@ services:
       - QUERY_PORT=27016
       - MAX_USERS=40
       - MAX_ADMIN=4
+      - SERVER_FPS=30
       - "SAVE_NAME=world1"
       - "SERVER_PASS=password"
       - STEAM_LIST=true
       - AUTOSAVE_NUM=50
       - AUTOSAVE_INT=300
       - "GAME_PRESET=StandardPvP"
+      - RCON_ENABLE=true
+      - RCON_PORT=25575
+      - "RCON_PASSWORD=rconpassword"
     ports: 
       - "27015:27015/udp"
       - "27016:27016/udp"
+      - "25575:25575/tcp"
     restart: unless-stopped
 ```
 
@@ -61,11 +66,15 @@ services:
     -e STEAM_LIST=true \
     -e AUTOSAVE_NUM=50 \
     -e AUTOSAVE_INT=300 \
-    -e GAME_PRESET="StandardPvP" \
+    -e "GAME_PRESET=StandardPvP" \
+    -e RCON_ENABLE=true \
+    -e RCON_PORT=25575 \
+    -e "RCON_PASSWORD=rconpassword" \
     -v '/home/user/vrising-server/server':'/mnt/vrising/server':'rw' \
     -v '/home/user/vrising-server/persistentdata':'/mnt/vrising/persistentdata':'rw' \
     -p 27015:27015/udp \
     -p 27016:27016/udp \
+    -p 25575:25575/tcp \
     'solareon/vrising-svr:latest'
 ```
 
@@ -90,18 +99,26 @@ The most important settings exposed as environment variables are the following:
 
 | Setting | Value Type | Example Value | Comment |
 |----------|:-------------:|:------:|---|
-| SERVER_NAME | string | "My V Rising Server" | Name of server |
-| SERVER_DESCRIPTION | string | "This is a role playing server" | Short description of server purpose, rules, message of the day |
-| GAME_PORT | number | 27015 | UDP port for game traffic |
-| QUERY_PORT | number | 27016 | UDP port for Steam server list features |
-| MAX_USERS | number | 40 | Max number of concurrent players on server |
-| MAX_ADMIN | number | 4 | Max number of admins to allow connect even when server is full |
-| SAVE_NAME | string | "world1" | Name of save file/directory |
-| SERVER_PASS | string | "password" | Set a password or leave empty |
-| STEAM_LIST | boolean | true | Set to true to list on server list, else set to false |
-| AUTOSAVE_NUM | number | 50 | Number of autosaves to keep |
-| AUTOSAVE_INT | number | 300 | Interval in seconds between each auto save |
+| SERVER_NAME | string | "My V Rising Server" | Name of server. |
+| SERVER_DESCRIPTION | string | "This is a role playing server" | Short description of server purpose, rules, message of the day. |
+| SERVER_ADDRESS | ip_address | "10.20.0.3" | IP address to bind server to, useful for servers with multiple addresses and you only want VRising to run on a particular one. |
+| GAME_PORT | number | 27015 | UDP port for game traffic. |
+| QUERY_PORT | number | 27016 | UDP port for Steam server list features. |
+| MAX_USERS | number | 40 | Max number of concurrent players on server. |
+| MAX_ADMIN | number | 4 | Max number of admins to allow connect even when server is full. |
+| SERVER_FPS | number | 30 | Target FPS for server. |
+| VAC_ENABLE | boolean | true | Enable VAC protection for server. VAC banned clients will not be able to connect. |
+| SAVE_NAME | string | "world1" | Name of save file/directory. |
+| SERVER_PASS | string | "password" | Set a password or leave empty. |
+| STEAM_LIST | boolean | true | Set to true to list on server list, else set to false. |
+| AUTOSAVE_NUM | number | 50 | Number of autosaves to keep. |
+| AUTOSAVE_INT | number | 300 | Interval in seconds between each auto save. |
 | GAME_PRESET | string | "StandardPvP" | Name of a GameSettings preset found in the GameSettingPresets folder. Using this will prevent any changes from `ServerGameSettings.json` from taking effect. |
+| LAN_MODE | boolean | false | Enable/Disable LAN Mode (Unknown functionality). |
+| RCON_ENABLE | boolean | false | Enable or disable RCON functionality. |
+| RCON_PORT | number | 25575 | Port for RCON to listen on. |
+| RCON_PASSWORD | string | "password" | Sets password for RCON access. (**REQUIRED**) to access RCON. |
+| RCON_ADDRESS | ip_address | "10.20.0.3" | IP address to bind RCON port to, useful for servers with multiple addresses. |
 
 If you want others to connect to your server, make sure you allow the server through your firewall. You might also need to forward ports on your router. To do this, please follow your manufacturer's instructions for your particular router.
 
@@ -161,3 +178,17 @@ The current auto save settings allows you to set save interval and save count. S
 
 For a point of comparison most save games are around 50-70MB per save. The default configuration will use around 3GB
 
+# RCON
+
+Altough currently with limited functionality, you can configure the server to listen to RCON connections. If you are not familiar with RCON you can read more about it here: https://developer.valvesoftware.com/wiki/Source_RCON_Protocol.
+
+To enable RCON, enable the appropriate environment variables
+  
+These are the currently available commands:
+
+| Command | Parameter | Comment |
+|------|:-------------:|:------|
+| announce | string | Sends a message to all players connected to the server. |
+| announcerestart | number | Sends a pre-configured message that announces server restart in x minutes to all players connected to the server. Less flexible than announce but has the benefit of being localized to each users language. |
+
+To connect to the server you need an RCON client. There are multiple available, one known to work with V Rising is https://github.com/Tiiffi/mcrcon.
