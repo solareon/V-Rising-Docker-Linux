@@ -6,6 +6,30 @@ d=/mnt/vrising/persistentdata/dotnet
 mkdir -p "$d" 2>/dev/null
 #chmod -R 777 "$d" 2>/dev/null
 
+term_handler() {
+	
+#!/usr/bin/bash
+# without this, server exits suddenly due to systemd killing wrong pid (wine pid, not vrising)
+PID=$(pgrep -f '^/mnt/vrising/server/VRisingServer.exe')
+echo "Stopping PID: $PID"
+kill -SIGINT "$PID"
+
+# systemd will eventually kill this if it doesnt work after 90s
+while true; do
+    sleep 1
+    PID=$(pgrep -f '^/mnt/vrising/server/VRisingServer.exe')
+    if [ -z "$PID" ]; then
+        echo "Process successfully stopped gracefully"
+        echo "Killing any leftover wine processes"
+        wineserver -k
+        sleep 1
+        exit
+    fi
+    sleep 1
+done
+}
+trap 'kill ${!}; term_handler' SIGTERM
+
 #clear tmp
 cd /tmp || exit
 rm -R /tmp/* 2>/dev/null
@@ -44,12 +68,12 @@ echo "steam_appid: $(cat $s/steam_appid.txt)"
 echo " "
 
 
-if [ ! -f "$p/ServerGameSettings.json" ]; then
-        echo "$p/ServerGameSettings.json not found. Copying default file."
+if [ ! -f "$p/Settings/ServerGameSettings.json" ]; then
+        echo "$p/Settings/ServerGameSettings.json not found. Copying default file."
         cp "$s/VRisingServer_Data/StreamingAssets/Settings/ServerGameSettings.json" "$p/Settings/" 2>&1
 fi
-if [ ! -f "$p/ServerHostSettings.json" ]; then
-        echo "$p/ServerHostSettings.json not found. Copying default file."
+if [ ! -f "$p/Settings/ServerHostSettings.json" ]; then
+        echo "$p/Settings/ServerHostSettings.json not found. Copying default file."
         cp "$s/VRisingServer_Data/StreamingAssets/Settings/ServerHostSettings.json" "$p/Settings/" 2>&1
 fi
 #Builds server settings from environment variables
@@ -92,3 +116,8 @@ echo " "
 
 Xvfb :0 -screen 0 1024x768x16 & \
 DISPLAY=:0.0 wine64 /mnt/vrising/server/VRisingServer.exe -persistentDataPath $p -serverName "$SERVER_NAME" -saveName $SAVE_NAME -gamePort $GAME_PORT -queryPort $QUERY_PORT -maxConnectedUsers $MAX_USERS -maxConnectedAdmins $MAX_ADMIN -logFile "$p/VRisingServer.log" 2>&1
+
+while true
+do
+  tail -f /dev/null & wait ${!}
+done
