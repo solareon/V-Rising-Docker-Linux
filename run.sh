@@ -28,6 +28,10 @@ trap 'kill ${!}; term_handler' SIGTERM
 cd /tmp || exit
 rm -R /tmp/* 2>/dev/null
 
+if [ -d "${STEAMAPPDATA}/Settings" ]; then
+    mkdir "${STEAMAPPDATA}/Settings"
+fi
+
 echo " "
 echo "Updating V-Rising Dedicated Server files..."
 # Override SteamCMD launch arguments if necessary
