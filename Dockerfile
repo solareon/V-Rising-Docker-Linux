@@ -42,7 +42,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y apt-utils && \
-    apt-get install -y software-properties-common && \
+    apt-get install -y software-properties-common wget && \
     dpkg --add-architecture i386 && \
     apt-get update -y && \
     apt-get upgrade -y 
@@ -52,7 +52,7 @@ RUN mkdir -pm755 /etc/apt/keyrings && \
     wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bullseye/winehq-bullseye.sources
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends winehq-stable wine32 wine64 xvfb xserver-xorg jq wget && \
+    apt-get install -y --no-install-recommends winehq-stable wine32 wine64 xvfb xserver-xorg jq && \
     apt-get clean
 
 # Switch to user
