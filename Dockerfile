@@ -4,11 +4,11 @@
 FROM cm2network/steamcmd:root
 LABEL maintainer = "https://github.com/solareon"
 
-ENV STEAMAPPID 1829350 \
-    STEAMAPP vrising \
-    STEAMAPPDIR "/${STEAMAPP}" \
-    STEAMAPPSERVER "${STEAMAPPDIR}}/server" \
-    STEAMAPPDATA "${STEAMAPPDIR}/data" 
+ENV STEAMAPPID=1829350 \
+    STEAMAPP=vrising \
+    STEAMAPPDIR="/${STEAMAPP}" \
+    STEAMAPPSERVER="${STEAMAPPDIR}/server" \
+    STEAMAPPDATA="${STEAMAPPDIR}/data" 
 
 ENV SERVER_NAME="A V-Rising Server" \
     SERVER_DESCRIPTION="A Default V-Rising Server powered by Docker" \
