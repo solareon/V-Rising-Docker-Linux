@@ -4,8 +4,8 @@ services:
     container_name: vrising-server
     image: solareon/vrising-svr:latest
     volumes: 
-      - ~/vrising/server:/mnt/vrising/server
-      - ~/vrising/persistentdata:/mnt/vrising/persistentdata
+      - ~/vrising/server:/vrising/server
+      - ~/vrising/data:/vrising/data
     environment:
       - SERVER_NAME="A V-Rising Server"
       - SERVER_DESCRIPTION="A server for my friends"

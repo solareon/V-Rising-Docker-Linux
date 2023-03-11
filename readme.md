@@ -1,5 +1,5 @@
 # Docker container for linux vrising server 
-Based upon steamcmd with WINE added. Supports modifying server config via environment variables in addition to manual changes to the ServerGameSettings.json
+Based upon cm2network/steamcmd with WINE added. Supports modifying server config via environment variables in addition to manual changes to the ServerGameSettings.json
 
 [![Docker Pulls](https://badgen.net/docker/pulls/solareon/vrising-svr?icon=docker&label=pulls)](https://hub.docker.com/r/solareon/vrising-svr) 
 [![Docker Stars](https://badgen.net/docker/stars/solareon/vrising-svr?icon=docker&label=stars)](https://hub.docker.com/r/solareon/vrising-svr) 
@@ -24,8 +24,8 @@ services:
     container_name: vrising-server
     image: solareon/vrising-svr:latest
     volumes: 
-      - ~/vrising/server:/mnt/vrising/server
-      - ~/vrising/persistentdata:/mnt/vrising/persistentdata
+      - ~/vrising/server:/vrising/server
+      - ~/vrising/data:/vrising/data
     environment:
       - "TZ=Europe/Berlin"
       - "SERVER_NAME=A V-Rising Server"
@@ -70,8 +70,8 @@ services:
     -e RCON_ENABLE=true \
     -e RCON_PORT=25575 \
     -e "RCON_PASSWORD=rconpassword" \
-    -v '/home/user/vrising-server/server':'/mnt/vrising/server':'rw' \
-    -v '/home/user/vrising-server/persistentdata':'/mnt/vrising/persistentdata':'rw' \
+    -v '/home/user/vrising-server/server':'/vrising/server':'rw' \
+    -v '/home/user/vrising-server/data':'/vrising/data':'rw' \
     -p 27015:27015/udp \
     -p 27016:27016/udp \
     -p 25575:25575/tcp \
@@ -88,7 +88,7 @@ As the names suggest, one of them is for hosting related settings and the other 
 The default settings of these can be found in `/server/VRisingServer_Data/StreamingAssets/Settings/`. These are only for reference and not used during the running over the server
 
 After the server has loaded the default files it looks for local overrides. These are located in:
-`/persistentdata/Settings`
+`/data/Settings`
 
 Note: ServerHostSettings.json is overwritten on startup using information from server variables. If you do not define the environment variables they will be filled with the defaults from the table below.
 
@@ -125,9 +125,9 @@ If you want others to connect to your server, make sure you allow the server thr
 If you want your server to show up on the server list you need to make sure that both the specified queryPort and gamePort is open in your firewall and forwarded on your router, otherwise just opening/forwarding the gamePort will be enough.
 
 # Server Administration (In-Game)
-To become an administrator in the game you will first need to modify the `adminlist.txt` file under `/persistentdata/Settings/` with your steamId (one steamId per line). This can be done without restarting your server. To become an administrator in the game you need to enable the console in the options menu, bring it down with `~` and authenticate using the `adminauth` console command. Once an administrator you can use a number of administrative commands like `banuser`, `bancharacter`, `banned`, `unban` and `kick`.
+To become an administrator in the game you will first need to modify the `adminlist.txt` file under `/data/Settings/` with your steamId (one steamId per line). This can be done without restarting your server. To become an administrator in the game you need to enable the console in the options menu, bring it down with `~` and authenticate using the `adminauth` console command. Once an administrator you can use a number of administrative commands like `banuser`, `bancharacter`, `banned`, `unban` and `kick`.
 
-If you ban users through the in-game console the server will automatically modify the `banlist.txt` located under `/persistentdata/Settings/` but you can also modify this manually (one steamId per line).
+If you ban users through the in-game console the server will automatically modify the `banlist.txt` located under `/data/Settings/` but you can also modify this manually (one steamId per line).
 
 ## Admin Commands
 Below is a list of some admin commands available in the console. This documentation is a work in progress
@@ -169,12 +169,12 @@ Below is a list of some admin commands available in the console. This documentat
 
 # Save Files
 The default location for save files are:
-`/persistentdata/Saves/`
+`/data/Saves/`
 
 ## Backups
-It is highly recommended to backup the save files often and before patching or before starting the server after having patched.
+It is highly recommended to backup the save files often and before patching or before starting the server after having patched. It is not needed to backup `/server/` as this will be recreated/updated by steamcmd on each restart.
 
-The current auto save settings allows you to set save interval and save count. So with the same amount of disk space you either save often but maybe not have that many save files (not so far back in time), or save less often (longer rollback in-case of crash) and have more save files, or high number of on both and consume more disk space. So, again, regularly backing up you save files is highly recommended in case your game state becomes corrupted.
+The current auto save settings allows you to set save interval and save count. So with the same amount of disk space you either save often but maybe not have that many save files (not so far back in time), or save less often (longer rollback in-case of crash) and have more save files, or high number of both and consume more disk space. So, again, regularly backing up you save files is highly recommended in case your game state becomes corrupted.
 
 For a point of comparison most save games are around 50-70MB per save. The default configuration will use around 3GB
 
