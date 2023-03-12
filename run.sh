@@ -84,8 +84,7 @@ echo "Starting Xvfb and wine64 ..."
 echo " "
 
 Xvfb :0 -screen 0 1024x768x16 & \
-DISPLAY=:0.0 winetricks comctl32 && \
-    wine64 "${STEAMAPPSERVER}"/VRisingServer.exe -persistentDataPath "${STEAMAPPDATA}" \
+DISPLAY=:0.0 wine64 "${STEAMAPPSERVER}"/VRisingServer.exe -persistentDataPath "${STEAMAPPDATA}" \
     -serverName "$SERVER_NAME" -saveName "$SAVE_NAME" \
     -gamePort "$GAME_PORT" -queryPort "$QUERY_PORT" \
     -maxConnectedUsers "$MAX_USERS" -maxConnectedAdmins "$MAX_ADMIN" \
