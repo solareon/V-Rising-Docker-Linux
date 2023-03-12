@@ -34,10 +34,6 @@ ENV SERVER_NAME="A V-Rising Server" \
     ADDITIONAL_ARGS="" \
     STEAMCMD_UPDATE_ARGS=""
 
-RUN mkdir ${STEAMAPPDIR} ${STEAMAPPSERVER} ${STEAMAPPDATA}
-
-RUN chown steam:steam -R ${STEAMAPPDIR}
-
 RUN apt-get update \
     && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
         apt-transport-https \
@@ -83,6 +79,10 @@ RUN wget -O /tmp/mcrcon.tar.gz https://github.com/Tiiffi/mcrcon/releases/downloa
 
 # Setup logging to docker container
 RUN ln -sf /proc/1/fd/1 ${STEAMAPPDATA}/VRisingServer.log
+
+RUN mkdir ${STEAMAPPDIR} ${STEAMAPPSERVER} ${STEAMAPPDATA}
+
+RUN chown steam:steam -R ${STEAMAPPDIR}
 
 # Switch to user
 USER ${USER}

@@ -55,7 +55,7 @@ services:
 ```
     docker run -d --name='vrising-server' \
     -e "TZ=Europe/Berlin" \
-    -e "SERVER_NAME=A V-Rising Server" \ 
+    -e "SERVER_NAME=A V-Rising Server" \
     -e "SERVER_DESCRIPTION=A server for my friends" \
     -e GAME_PORT=27015 \
     -e QUERY_PORT=27016 \
