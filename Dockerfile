@@ -80,7 +80,10 @@ RUN wget -O /tmp/mcrcon.tar.gz https://github.com/Tiiffi/mcrcon/releases/downloa
 # Setup logging to docker container and build directories
 RUN mkdir ${STEAMAPPDIR} ${STEAMAPPSERVER} ${STEAMAPPDATA} \
     && ln -sf /proc/1/fd/1 ${STEAMAPPDATA}/VRisingServer.log \
-    && chown steam:steam -R ${STEAMAPPDIR}
+    && chown steam:steam -R ${STEAMAPPDIR} \
+    && mkdir /tmp/.X11-unix \
+    && chmod 1777 /tmp/.X11-unix \
+    && chown root /tmp/.X11-unix/
 
 # Switch to user
 USER ${USER}
