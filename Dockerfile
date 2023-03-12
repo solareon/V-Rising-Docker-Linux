@@ -1,7 +1,7 @@
 ###########################################################
 # Dockerfile that builds a V-Rising Gameserver
 ###########################################################
-FROM solareon:docker-steamcmd-wine:root
+FROM solareon/docker-steamcmd-wine:root
 LABEL maintainer = "https://github.com/solareon"
 
 ENV STEAMAPPID 1829350
