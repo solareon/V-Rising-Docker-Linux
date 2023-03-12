@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+MCRCON_PASS=${RCON_PASSWORD}
 
 term_handler() {
 	
