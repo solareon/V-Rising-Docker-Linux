@@ -41,6 +41,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         xvfb \
         jq \
+        winbind \
     && rm -rf /var/lib/apt/lists/*
 
 # Install mcrcon

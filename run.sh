@@ -86,7 +86,7 @@ Xvfb :0 -screen 0 1024x768x16 & \
 DISPLAY=:0.0 wine64 "${STEAMAPPSERVER}"/VRisingServer.exe -persistentDataPath "${STEAMAPPDATA}" \
     -serverName "$SERVER_NAME" -saveName "$SAVE_NAME" \
     -gamePort "$GAME_PORT" -queryPort "$QUERY_PORT" \
-    -maxConnectedUsers "$MAX_USERS" -maxConnectedAdmins "$MAX_ADMIN" \
+    -maxUsers "$MAX_USERS" -maxAdmins "$MAX_ADMIN" \
     -logFile "${STEAMAPPDATA}/VRisingServer.log" "${ADDITIONAL_ARGS}" 2>&1
 
 while true
