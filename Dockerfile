@@ -78,9 +78,10 @@ RUN wget -O /tmp/mcrcon.tar.gz https://github.com/Tiiffi/mcrcon/releases/downloa
     && rm /tmp/mcrcon.tar.gz
 
 # Setup logging to docker container
-RUN ln -sf /proc/1/fd/1 ${STEAMAPPDATA}/VRisingServer.log
 
 RUN mkdir ${STEAMAPPDIR} ${STEAMAPPSERVER} ${STEAMAPPDATA}
+
+RUN ln -sf /proc/1/fd/1 ${STEAMAPPDATA}/VRisingServer.log
 
 RUN chown steam:steam -R ${STEAMAPPDIR}
 
