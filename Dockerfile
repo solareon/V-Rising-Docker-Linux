@@ -63,7 +63,8 @@ RUN apt-get update \
 
 # Install wine
 ARG WINE_BRANCH="stable"
-RUN wget -nv -O- https://dl.winehq.org/wine-builds/winehq.key | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add - \
+RUN mkdir -pm755 /etc/apt/keyrings \
+    && wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key \
     && wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bullseye/winehq-bullseye.sources \
     && dpkg --add-architecture i386 \
     && apt-get update \
@@ -73,6 +74,9 @@ RUN wget -nv -O- https://dl.winehq.org/wine-builds/winehq.key | APT_KEY_DONT_WAR
 # Install winetricks
 RUN wget -nv -O /usr/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
     && chmod +x /usr/bin/winetricks
+
+# Setup logging to docker container
+RUN ln -sf /proc/1/fd/1 ${STEAMAPPDATA}/VRisingServer.log
 
 # Switch to user
 USER ${USER}
