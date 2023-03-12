@@ -80,15 +80,16 @@ if [ -f "/tmp/.X0-lock" ]; then rm /tmp/.X0-lock; fi
 cd "${STEAMAPPDIR}" || exit
 echo "Starting V Rising Dedicated Server with name ${SERVER_NAME}"
 echo "SteamAppId set to ${STEAMAPPID}"
-echo "Starting Xvfb and wine64 ..."
 echo " "
 
-Xvfb :0 -screen 0 1024x768x16 & \
-DISPLAY=:0.0 wine64 "${STEAMAPPSERVER}"/VRisingServer.exe -persistentDataPath "${STEAMAPPDATA}" \
-    -serverName "$SERVER_NAME" -saveName "$SAVE_NAME" \
-    -gamePort "$GAME_PORT" -queryPort "$QUERY_PORT" \
-    -maxConnectedUsers "$MAX_USERS" -maxConnectedAdmins "$MAX_ADMIN" \
-    -logFile "${STEAMAPPDATA}/VRisingServer.log" "${ADDITIONAL_ARGS}" 2>&1
+xvfb-run \
+  --auto-servernum \
+  --server-args='-screen 0 640x480x24:32 -nolisten tcp -nolisten unix' \
+  bash -c "$STEAMAPPSERVER/VRisingServer.exe -persistentDataPath $STEAMAPPDATA \
+    -serverName $SERVER_NAME -saveName $SAVE_NAME \
+    -gamePort $GAME_PORT -queryPort $QUERY_PORT \
+    -maxConnectedUsers $MAX_USERS -maxConnectedAdmins $MAX_ADMIN \
+    -logFile $STEAMAPPDATA/VRisingServer.log $ADDITIONAL_ARGS" &
 
 while true
 do
