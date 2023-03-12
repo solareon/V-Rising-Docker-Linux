@@ -69,7 +69,8 @@ RUN mkdir -pm755 /etc/apt/keyrings \
 
 # Install winetricks
 RUN wget -nv -O /usr/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
-    && chmod +x /usr/bin/winetricks
+    && chmod +x /usr/bin/winetricks \
+    && winetricks comctl32
 
 # Install mcrcon
 RUN wget -O /tmp/mcrcon.tar.gz https://github.com/Tiiffi/mcrcon/releases/download/v0.7.2/mcrcon-0.7.2-linux-x86-64.tar.gz \
@@ -77,13 +78,10 @@ RUN wget -O /tmp/mcrcon.tar.gz https://github.com/Tiiffi/mcrcon/releases/downloa
     && chmod +x /usr/bin/mcrcon \
     && rm /tmp/mcrcon.tar.gz
 
-# Setup logging to docker container
-
-RUN mkdir ${STEAMAPPDIR} ${STEAMAPPSERVER} ${STEAMAPPDATA}
-
-RUN ln -sf /proc/1/fd/1 ${STEAMAPPDATA}/VRisingServer.log
-
-RUN chown steam:steam -R ${STEAMAPPDIR}
+# Setup logging to docker container and build directories
+RUN mkdir ${STEAMAPPDIR} ${STEAMAPPSERVER} ${STEAMAPPDATA} \
+    && ln -sf /proc/1/fd/1 ${STEAMAPPDATA}/VRisingServer.log \
+    && RUN chown steam:steam -R ${STEAMAPPDIR}
 
 # Switch to user
 USER ${USER}
