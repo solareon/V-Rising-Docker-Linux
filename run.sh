@@ -33,18 +33,6 @@ if [ ! -d "${STEAMAPPDATA}/Settings" ]; then
 fi
 
 echo " "
-echo "Downloading and installing .NET SDK 6.0.300 and core runtime..."
-echo " "
-
-if [ ! -f "${STEAMAPPDATA}/dotnet" ]; then
-	wget https://download.visualstudio.microsoft.com/download/pr/dc930bff-ef3d-4f6f-8799-6eb60390f5b4/1efee2a8ea0180c94aff8f15eb3af981/dotnet-sdk-6.0.300-linux-x64.tar.gz
-	wget https://download.visualstudio.microsoft.com/download/pr/a0e9ceb8-04eb-4510-876c-795a6a123dda/6141e57558eddc2d4629c7c14c2c6fa1/aspnetcore-runtime-6.0.5-linux-x64.tar.gz
-    tar zxf dotnet-sdk-6.0.300-linux-x64.tar.gz -C "${STEAMAPPDATA}"
-	tar zxf aspnetcore-runtime-6.0.5-linux-x64.tar.gz -C "${STEAMAPPDATA}"
-	rm -R /tmp/*
-fi
-
-echo " "
 echo "Updating V-Rising Dedicated Server files..."
 # Override SteamCMD launch arguments if necessary
 # Used for subscribing to betas or for testing

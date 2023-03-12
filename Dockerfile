@@ -38,22 +38,41 @@ RUN mkdir ${STEAMAPPDIR} ${STEAMAPPSERVER} ${STEAMAPPDATA}
 
 RUN chown steam:steam -R ${STEAMAPPDIR}
 
-ARG DEBIAN_FRONTEND="noninteractive"
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y apt-utils && \
-    apt-get install -y software-properties-common wget && \
-    dpkg --add-architecture i386 && \
-    apt-get update -y && \
-    apt-get upgrade -y 
+RUN apt-get update \
+    && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
+        apt-transport-https \
+        ca-certificates \
+        cabextract \
+        git \
+        gnupg \
+        gosu \
+        gpg-agent \
+        jq \
+        locales \
+        p7zip \
+        pulseaudio \
+        pulseaudio-utils \
+        sudo \
+        tzdata \
+        unzip \
+        wget \
+        winbind \
+        xvfb \
+        zenity \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -pm755 /etc/apt/keyrings && \
-    wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
-    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bullseye/winehq-bullseye.sources
+# Install wine
+ARG WINE_BRANCH="stable"
+RUN wget -nv -O- https://dl.winehq.org/wine-builds/winehq.key | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add - \
+    && wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bullseye/winehq-bullseye.sources \
+    && dpkg --add-architecture i386 \
+    && apt-get update \
+    && DEBIAN_FRONTEND="noninteractive" apt-get install -y --install-recommends winehq-${WINE_BRANCH} \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends winehq-stable wine32 wine64 xvfb xserver-xorg jq && \
-    apt-get clean
+# Install winetricks
+RUN wget -nv -O /usr/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+    && chmod +x /usr/bin/winetricks
 
 # Switch to user
 USER ${USER}
