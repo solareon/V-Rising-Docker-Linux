@@ -75,6 +75,12 @@ RUN mkdir -pm755 /etc/apt/keyrings \
 RUN wget -nv -O /usr/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
     && chmod +x /usr/bin/winetricks
 
+# Install mcrcon
+RUN wget -O /tmp/mcrcon.tar.gz https://github.com/Tiiffi/mcrcon/releases/download/v0.7.2/mcrcon-0.7.2-linux-x86-64.tar.gz \
+    && tar -zxvf /tmp/mcrcon.tar.gz -C /usr/bin/ mcrcon \
+    && chmod +x /usr/bin/mcrcon \
+    && rm /tmp/mcrcon.tar.gz
+
 # Setup logging to docker container
 RUN ln -sf /proc/1/fd/1 ${STEAMAPPDATA}/VRisingServer.log
 
